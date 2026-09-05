@@ -1,4 +1,6 @@
-export function SiteFooter() {
+import type { Tresc } from './tresc';
+
+export function SiteFooter({ t }: { t: Tresc }) {
   const rok = new Date().getFullYear();
 
   return (
@@ -6,27 +8,24 @@ export function SiteFooter() {
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:px-6 md:grid-cols-3">
         <div>
           <p className="font-display text-2xl font-bold text-ink-50">EzScout</p>
-          <p className="mt-3 max-w-xs text-sm leading-relaxed text-ink-300">
-            Raporty skautingowe i analizy meczowe. Dane zbierane ręcznie, wnioski
-            pisane przez analityka — nie przez generator.
-          </p>
+          <p className="mt-3 max-w-xs text-sm leading-relaxed text-ink-300">{t.stopka.opis}</p>
         </div>
 
         <div>
           <h2 className="font-display text-sm font-bold uppercase tracking-widest text-amber-400">
-            Serwis
+            {t.stopka.serwis}
           </h2>
           <ul className="mt-4 space-y-2 text-sm text-ink-300">
-            <li><a className="hover:text-amber-400" href="#oferta">Oferta</a></li>
-            <li><a className="hover:text-amber-400" href="#jak-dzialamy">Jak działamy</a></li>
-            <li><a className="hover:text-amber-400" href="#skutecznosc">Skuteczność</a></li>
-            <li><a className="hover:text-amber-400" href="#faq">FAQ</a></li>
+            <li><a className="hover:text-amber-400" href="#oferta">{t.nav.oferta}</a></li>
+            <li><a className="hover:text-amber-400" href="#jak-dzialamy">{t.nav.jak}</a></li>
+            <li><a className="hover:text-amber-400" href="#skutecznosc">{t.nav.skutecznosc}</a></li>
+            <li><a className="hover:text-amber-400" href="#faq">{t.nav.faq}</a></li>
           </ul>
         </div>
 
         <div>
           <h2 className="font-display text-sm font-bold uppercase tracking-widest text-amber-400">
-            Kontakt
+            {t.stopka.kontakt}
           </h2>
           <ul className="mt-4 space-y-2 text-sm text-ink-300">
             <li>
@@ -34,17 +33,17 @@ export function SiteFooter() {
                 kontakt@ezscout.dawidolko.pl
               </a>
             </li>
-            <li>Poniedziałek – piątek, 9:00 – 17:00</li>
-            <li>Rzeszów, Polska</li>
+            <li>{t.stopka.godziny}</li>
+            <li>{t.stopka.miasto}</li>
           </ul>
         </div>
       </div>
 
       <div className="border-t border-ink-800">
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-5 text-xs text-ink-400 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-          <p>© {rok} EzScout. Projekt portfolio — serwis demonstracyjny.</p>
+          <p>© {rok} {t.stopka.prawa}</p>
           <p>
-            Autor:{' '}
+            {t.stopka.autor}{' '}
             <a className="text-ink-300 hover:text-amber-400" href="https://dawidolko.pl">
               dawidolko.pl
             </a>

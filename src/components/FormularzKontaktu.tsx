@@ -1,17 +1,18 @@
 'use client';
 
 import { useState } from 'react';
+import type { Tresc } from './tresc';
 
 type Bledy = Partial<Record<'imie' | 'email' | 'wiadomosc', string>>;
 
-export function FormularzKontaktu() {
+export function FormularzKontaktu({ t }: { t: Tresc }) {
   const [bledy, setBledy] = useState<Bledy>({});
   const [wyslane, setWyslane] = useState(false);
 
   /*
    * Walidacja po stronie klienta, bo serwis jest statyczny i nie ma dokad
    * wyslac danych. Komunikaty sa tekstem powiazanym z polem przez
-   * aria-describedby — sam czerwony obramowanie nie niesie informacji dla
+   * aria-describedby — samo czerwone obramowanie nie niesie informacji dla
    * osoby, ktora go nie widzi.
    */
   function przy(e: React.FormEvent<HTMLFormElement>) {
@@ -23,9 +24,9 @@ export function FormularzKontaktu() {
     const email = String(dane.get('email') ?? '').trim();
     const wiadomosc = String(dane.get('wiadomosc') ?? '').trim();
 
-    if (imie.length < 2) nowe.imie = 'Podaj imię — co najmniej dwa znaki.';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) nowe.email = 'Podaj poprawny adres e-mail.';
-    if (wiadomosc.length < 20) nowe.wiadomosc = 'Opisz zlecenie w co najmniej 20 znakach.';
+    if (imie.length < 2) nowe.imie = t.kontakt.bledy.imie;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) nowe.email = t.kontakt.bledy.email;
+    if (wiadomosc.length < 20) nowe.wiadomosc = t.kontakt.bledy.wiadomosc;
 
     setBledy(nowe);
     setWyslane(Object.keys(nowe).length === 0);
@@ -39,7 +40,7 @@ export function FormularzKontaktu() {
     <form noValidate onSubmit={przy} className="mt-8 space-y-5">
       <div>
         <label htmlFor="imie" className="text-sm font-semibold text-ink-100">
-          Imię i nazwisko <span className="text-amber-400">*</span>
+          {t.kontakt.imie} <span className="text-amber-400">*</span>
         </label>
         <input
           id="imie"
@@ -59,7 +60,7 @@ export function FormularzKontaktu() {
 
       <div>
         <label htmlFor="email" className="text-sm font-semibold text-ink-100">
-          E-mail <span className="text-amber-400">*</span>
+          {t.kontakt.email} <span className="text-amber-400">*</span>
         </label>
         <input
           id="email"
@@ -79,7 +80,7 @@ export function FormularzKontaktu() {
 
       <div>
         <label htmlFor="wiadomosc" className="text-sm font-semibold text-ink-100">
-          Kogo mamy obejrzeć <span className="text-amber-400">*</span>
+          {t.kontakt.wiadomosc} <span className="text-amber-400">*</span>
         </label>
         <textarea
           id="wiadomosc"
@@ -95,7 +96,7 @@ export function FormularzKontaktu() {
           </p>
         ) : (
           <p id="wiadomosc-podpowiedz" className="mt-1.5 text-sm text-ink-400">
-            Nazwisko, klub, pozycja i termin, na kiedy potrzebujesz raportu.
+            {t.kontakt.podpowiedz}
           </p>
         )}
       </div>
@@ -104,17 +105,12 @@ export function FormularzKontaktu() {
         type="submit"
         className="rounded-md bg-amber-500 px-6 py-3 font-bold text-ink-950 transition hover:bg-amber-400"
       >
-        Wyślij zapytanie
+        {t.kontakt.wyslij}
       </button>
 
       {/* Komunikat po wyslaniu jest ogloszany czytnikom ekranu. */}
       <p aria-live="polite" className="min-h-6 text-sm">
-        {wyslane && (
-          <span className="font-semibold text-grass-500">
-            Dziękujemy — formularz przeszedł walidację. To wersja demonstracyjna,
-            więc wiadomość nie jest nigdzie wysyłana.
-          </span>
-        )}
+        {wyslane && <span className="font-semibold text-grass-500">{t.kontakt.sukces}</span>}
       </p>
     </form>
   );
