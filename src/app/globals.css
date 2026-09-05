@@ -1,0 +1,101 @@
+@import 'tailwindcss';
+
+/*
+ * EzScout — system designu.
+ *
+ * Charakter: noc na stadionie. Bardzo ciemna, lekko niebieska podstawa,
+ * bursztyn jako jedyny akcent (kolor swiatel na trybunach) i waskie,
+ * kondensowane liternictwo znane z tablic wynikow. Swiadomie bez kremowych
+ * tel, gradientow fioletowo-niebieskich i emoji w roli ikon.
+ */
+
+@theme {
+  --color-ink-950: #080b10;
+  --color-ink-900: #0d1119;
+  --color-ink-800: #141a25;
+  --color-ink-700: #1c2432;
+  --color-ink-600: #2a3446;
+  --color-ink-400: #6b7789;
+  --color-ink-300: #98a3b4;
+  --color-ink-100: #dbe2ec;
+  --color-ink-50: #f1f4f9;
+
+  --color-amber-500: #f5a524;
+  --color-amber-400: #ffb840;
+  --color-amber-300: #ffd28a;
+  --color-amber-900: #3a2a08;
+
+  --color-grass-500: #2f9e5f;
+
+  --font-display: 'Barlow Condensed', 'Arial Narrow', system-ui, sans-serif;
+  --font-body: 'Barlow', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  background: var(--color-ink-950);
+  color: var(--color-ink-100);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Kontrastowy pierscien fokusa — widoczny i na ciemnym tle, i na bursztynie. */
+:where(a, button, summary, input, textarea, select):focus-visible {
+  outline: 3px solid var(--color-amber-400);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 60;
+  padding: 0.75rem 1.25rem;
+  background: var(--color-amber-500);
+  color: var(--color-ink-950);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+}
+
+/*
+ * Motyw linii boiska: cienkie, ukosne pasy w tle sekcji nadrzednej.
+ * Rysowane gradientem, wiec nie kosztuja zadnego zadania sieciowego.
+ */
+.pitch-lines {
+  background-image: repeating-linear-gradient(
+    115deg,
+    transparent 0 46px,
+    rgb(255 255 255 / 2.5%) 46px 47px
+  );
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
