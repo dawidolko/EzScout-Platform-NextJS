@@ -1,15 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   /*
-   * Eksport statyczny: serwis jest w calosci renderowany na etapie budowania
-   * i trafia na GitHub Pages. Nie ma backendu, wiec nie ma czego uruchamiac
-   * po stronie serwera.
+   * Static export: the site is fully rendered at build time and goes to GitHub
+   * Pages. There is no backend, so there is nothing to run on the server side.
    */
   output: 'export',
   trailingSlash: true,
   experimental: { globalNotFound: true },
   images: {
-    // Pod `output: 'export'` optymalizator next/image nie dziala.
+    /*
+     * The next/image optimizer does not work with `output: 'export'`.
+     */
     unoptimized: true,
   },
 };
