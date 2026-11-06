@@ -37,6 +37,10 @@
 }
 
 @layer base {
+  html {
+    overflow-x: clip;
+  }
+
   :root {
     color-scheme: dark;
     --focus: var(--color-chalk);
