@@ -15,22 +15,22 @@ export default function GlobalNotFound() {
     <html lang="en" className={fontVariables}>
       <head>
         <meta httpEquiv="Content-Security-Policy" content={CONTENT_SECURITY_POLICY} />
-        <script src="/a11y/a11y-panel.js" data-accent="#1d4ed8" defer></script>
+        <script src="/a11y/a11y-panel.js" data-accent="#17583c" defer></script>
       </head>
       <body>
-        <main id="main-content" className="mx-auto flex min-h-dvh max-w-xl flex-col justify-center px-4 py-16 sm:px-6">
-          <p className="font-display text-sm font-bold uppercase tracking-widest text-ink-300">404</p>
-          <h1 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink-50 sm:text-5xl">Page not found</h1>
-          <p className="mt-4 text-lg leading-relaxed text-ink-300">
-            The address may be mistyped, or the page may have moved.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <a href="/" className="rounded-md px-6 py-3 font-bold transition bg-amber-500 text-ink-950 hover:bg-amber-400">
-              Back to the home page
-            </a>
-            <a href="/pl/" lang="pl" hrefLang="pl" className="rounded-md px-6 py-3 font-bold transition border border-ink-600 text-ink-50 hover:border-amber-400 hover:text-amber-400">
-              Strona główna po polsku
-            </a>
+        <main id="main-content" className="missing wrap">
+          <h1 className="sheet-tab">Page not found</h1>
+          <div className="sheet">
+            <p className="stamp stamp--verdict">404</p>
+            <p className="sheet-lead">The address may be mistyped, or the page may have moved.</p>
+            <div className="page-actions">
+              <a href="/" className="btn-stamp">
+                Back to the home page
+              </a>
+              <a href="/pl/" lang="pl" hrefLang="pl" className="link-typed">
+                Strona główna po polsku
+              </a>
+            </div>
           </div>
         </main>
       </body>

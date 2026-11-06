@@ -1,9 +1,9 @@
 /*
- * Tresc serwisu w dwoch jezykach.
+ * Site copy in two languages.
  *
- * Angielski jest domyslny (trasa `/`), polski dostepny pod `/pl`. Wszystko —
- * lacznie z etykieta skip linku i tekstami formularza — siedzi tutaj, wiec
- * dolozenie kolejnego jezyka nie wymaga dotykania zadnego komponentu.
+ * English is the default (route `/`), Polish lives at `/pl/`. Everything,
+ * including the skip link and form messages, sits here, so adding a language
+ * never means touching a component.
  */
 
 export type Jezyk = 'en' | 'pl';
@@ -54,6 +54,16 @@ export type Tresc = {
     sukces: string;
   };
   stopka: { opis: string; serwis: string; kontakt: string; godziny: string; miasto: string; prawa: string; autor: string };
+  dossier: {
+    confidential: string;
+    positionMap: string;
+    positionMapAlt: string;
+    conclusion: string;
+    noteCrosses: string;
+    notePress: string;
+    noteMisses: string;
+    moveAlt: string;
+  };
 };
 
 const EN: Tresc = {
@@ -152,6 +162,16 @@ const EN: Tresc = {
     prawa: 'EzScout. Portfolio project — demonstration site.',
     autor: 'Built by',
   },
+  dossier: {
+    confidential: 'Confidential',
+    positionMap: 'Position map',
+    positionMapAlt: 'Chalk drawing of a half pitch marking where the centre-back stands and the duels he wins in front of his goal.',
+    conclusion: 'Conclusion',
+    noteCrosses: 'reads crosses well',
+    notePress: 'loses his shape against a high press',
+    noteMisses: 'the misses go on file too',
+    moveAlt: 'Chalk drawing of a move across a pitch with three marked points: enquiry, observation and report.',
+  },
 };
 
 const PL: Tresc = {
@@ -249,6 +269,16 @@ const PL: Tresc = {
     miasto: 'Rzeszów, Polska',
     prawa: 'EzScout. Projekt portfolio — serwis demonstracyjny.',
     autor: 'Autor:',
+  },
+  dossier: {
+    confidential: 'Poufne',
+    positionMap: 'Mapa pozycji',
+    positionMapAlt: 'Kredowy rysunek połowy boiska z miejscem, w którym stoi środkowy obrońca, i pojedynkami wygranymi przed jego bramką.',
+    conclusion: 'Wniosek',
+    noteCrosses: 'czyta dośrodkowania',
+    notePress: 'przy wysokim pressingu gubi ustawienie',
+    noteMisses: 'pomyłki też trafiają do akt',
+    moveAlt: 'Kredowy rysunek akcji na boisku z trzema punktami: zgłoszenie, obserwacja i raport.',
   },
 };
 

@@ -25,7 +25,8 @@ There is no backend and no database. The whole site is prerendered to files and 
 ## 🎯 Key Features
 
 - **Four packages** — from a single-match screening to a monthly retainer, each with a stated number of matches watched and a stated delivery time.
-- **A sample report card in the hero** — the visitor sees what they are buying before reading a word of the offer.
+- **The hero is an open report** — the headline, a pinned position map, a typed rating sheet, the analyst's margin notes and a stamped verdict sit on one page, so the visitor sees what they are buying before reading a word of the offer.
+- **Packages as a price ledger** — one ruled row per package, with matches watched and delivery time stated in each.
 - **Honest results section** — the copy commits to publishing the misses alongside the hits, because a scouting service without misses is not credible.
 - **CSS-only FAQ** — `<details>` and `<summary>`, no JavaScript, works with the script disabled.
 - **Form that admits what it is** — validation runs in the browser and says plainly that nothing is sent. A demo that pretends to mail is worse than one that does not.
@@ -36,11 +37,11 @@ There is no backend and no database. The whole site is prerendered to files and 
 
 | Hero — the offer in one screen                                                                  | Packages                                                                        |
 | ------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |
-| ![The EzScout hero with a sample player report card](docs/screenshots/hero.webp)                | ![The four scouting packages side by side](docs/screenshots/oferta.webp)        |
+| ![The EzScout hero as an open report page with a stamped verdict](docs/screenshots/hero.webp)                | ![The four scouting packages as rows of a price ledger](docs/screenshots/oferta.webp)        |
 
 | How the service works                                                             | Frequently asked questions                                              |
 | ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| ![The three-step process: enquiry, observation, report](docs/screenshots/jak-dzialamy.webp) | ![The FAQ accordion built from details and summary](docs/screenshots/faq.webp) |
+| ![The three-step process drawn in chalk as a move across a pitch](docs/screenshots/jak-dzialamy.webp) | ![The FAQ as a typed question and answer transcript on kraft](docs/screenshots/faq.webp) |
 
 ---
 
@@ -48,10 +49,11 @@ There is no backend and no database. The whole site is prerendered to files and 
 
 | Layer            | Responsibility                                                                              |
 | ---------------- | ------------------------------------------------------------------------------------------- |
-| `src/app`        | Routing, document metadata, fonts, JSON-LD and the page itself. One route, fully prerendered. |
-| `src/components` | Header, footer, enquiry form — the only pieces that need to run in the browser.             |
-| `src/components/dane.ts` | All copy: packages, process steps, figures and FAQ entries. Editing the offer never means editing markup. |
-| `src/app/globals.css`    | Design tokens and base styles. Components read tokens; no component hard-codes a hex value.  |
+| `src/app`        | Routing, document metadata, fonts, JSON-LD and the 404 page. Two language routes, fully prerendered. |
+| `src/components` | The page, header, footer and enquiry form. Only the header and the form run in the browser. |
+| `src/components/tresc.ts` | All copy in both languages: packages, process steps, figures and FAQ entries. Editing the offer never means editing markup. |
+| `src/components/Drawings.tsx` | The inline SVG line drawings: position map, tactical move, paper clip and centre circle. |
+| `src/app/globals.css`    | Design tokens and every material on the page. Components use named classes and read tokens from here. |
 
 ---
 
@@ -107,9 +109,24 @@ npm run serve      # serve the exported site from out/
 
 ## 🎨 Design
 
-Stadium at night: a very dark, slightly blue ground, amber as the single accent and condensed type borrowed from scoreboards. The pitch-line motif in the hero is a repeating CSS gradient, so it costs no network request.
+A confidential scouting file lying open on a mown pitch. Every surface is a material with a job, and the page is read as a sequence of documents rather than a stack of sections.
 
-Colours live as custom properties in `src/app/globals.css`. Both the palette and the type scale are defined once; a component that needs a new shade adds a token rather than a literal.
+| Material    | Colour    | Used for                                                                   |
+| ----------- | --------- | -------------------------------------------------------------------------- |
+| Grass       | `#0f2c20` | The desk everything lies on, with faint mowing stripes                     |
+| Sage paper  | `#e8ede0` | Report sheets, with a ruled margin and punched binder holes                |
+| Kraft       | `#d8b872` | The folder, the index tabs and the FAQ divider                             |
+| Chalk       | `#edf1e6` | Tactical line drawings and text on the grass                               |
+| Stamp ink   | `#a81e1a` | Verdicts and the actions that place an order                               |
+| Blue biro   | `#1b3a9c` | The analyst's handwritten margin notes                                     |
+
+- **Header:** index tabs standing on the rim of the folder. The tab of the section in view comes forward.
+- **Hero:** one open report page, not a text and card split. The rating scale is typed, one `X` per five points.
+- **Sections:** a price ledger, a chalk tactics board drawn on the grass, a season review typed as a record, a kraft Q and A transcript and a printed order form.
+- **Type:** [Besley](https://github.com/indestructible-type/Besley) for the voice of the service, [Courier Prime](https://github.com/quoteunquoteapps/CourierPrime) for anything typed into a record and [Caveat](https://github.com/googlefonts/caveat) for margin notes only. All three are self-hosted woff2 subsets with Polish coverage in `src/app/fonts`; Caveat is not preloaded.
+- **Motion:** one unprompted moment, the verdict stamp landing after the page loads. The chalk line of the tactics board draws as it scrolls into view. Both are off with reduced motion, and the resting state is the finished drawing.
+
+Colours live as custom properties in `src/app/globals.css`, defined once. The accessibility panel uses `#17583c` as its accent.
 
 ---
 
@@ -117,7 +134,7 @@ Colours live as custom properties in `src/app/globals.css`. Both the palette and
 
 - One `<h1>` per page, no skipped heading levels.
 - Skip link as the first focusable element, `<main id="main-content">` as its target.
-- `:focus-visible` rings that clear contrast on both the dark ground and the amber accent.
+- `:focus-visible` rings set per material: chalk on the grass, blue biro on paper and kraft.
 - Form errors bound with `aria-describedby` and `aria-invalid`; the message is text, never colour alone.
 - The submitted-state message is announced through `aria-live`.
 - `prefers-reduced-motion` honoured across every transition.
@@ -131,12 +148,18 @@ An accessibility panel in the corner of every page changes text size, contrast, 
 ```
 src/
 ├── app/
-│   ├── layout.tsx        metadata, fonts, JSON-LD, landmarks
-│   ├── page.tsx          every section of the page
-│   └── globals.css       design tokens and base styles
+│   ├── (en)/             English route with its metadata and JSON-LD
+│   ├── (pl)/             Polish route with its metadata and JSON-LD
+│   ├── fonts/            self-hosted woff2 subsets and their licence
+│   ├── fonts.ts          font declarations
+│   ├── csp.ts            Content Security Policy
+│   ├── global-not-found.tsx
+│   └── globals.css       design tokens and materials
 └── components/
-    ├── dane.ts           packages, process, figures, FAQ
-    ├── SiteHeader.tsx    sticky navigation with a mobile menu
+    ├── tresc.ts          all copy in both languages
+    ├── StronaGlowna.tsx  every section of the page
+    ├── Drawings.tsx      inline SVG line drawings
+    ├── SiteHeader.tsx    index tabs and the phone menu
     ├── SiteFooter.tsx
     └── FormularzKontaktu.tsx
 ```

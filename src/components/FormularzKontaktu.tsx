@@ -3,115 +3,106 @@
 import { useState } from 'react';
 import type { Tresc } from './tresc';
 
-type Bledy = Partial<Record<'imie' | 'email' | 'wiadomosc', string>>;
+type Errors = Partial<Record<'imie' | 'email' | 'wiadomosc', string>>;
 
 export function FormularzKontaktu({ t }: { t: Tresc }) {
-  const [bledy, setBledy] = useState<Bledy>({});
-  const [wyslane, setWyslane] = useState(false);
+  const [errors, setErrors] = useState<Errors>({});
+  const [sent, setSent] = useState(false);
 
   /*
-   * Walidacja po stronie klienta, bo serwis jest statyczny i nie ma dokad
-   * wyslac danych. Komunikaty sa tekstem powiazanym z polem przez
-   * aria-describedby — samo czerwone obramowanie nie niesie informacji dla
-   * osoby, ktora go nie widzi.
+   * Validation runs in the browser because the site is static and has nowhere
+   * to send data. Messages are text tied to the field with aria-describedby,
+   * since a red line alone tells nothing to someone who cannot see it.
    */
-  function przy(e: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const dane = new FormData(e.currentTarget);
-    const nowe: Bledy = {};
+    const data = new FormData(e.currentTarget);
+    const next: Errors = {};
 
-    const imie = String(dane.get('imie') ?? '').trim();
-    const email = String(dane.get('email') ?? '').trim();
-    const wiadomosc = String(dane.get('wiadomosc') ?? '').trim();
+    const name = String(data.get('imie') ?? '').trim();
+    const email = String(data.get('email') ?? '').trim();
+    const message = String(data.get('wiadomosc') ?? '').trim();
 
-    if (imie.length < 2) nowe.imie = t.kontakt.bledy.imie;
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) nowe.email = t.kontakt.bledy.email;
-    if (wiadomosc.length < 20) nowe.wiadomosc = t.kontakt.bledy.wiadomosc;
+    if (name.length < 2) next.imie = t.kontakt.bledy.imie;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) next.email = t.kontakt.bledy.email;
+    if (message.length < 20) next.wiadomosc = t.kontakt.bledy.wiadomosc;
 
-    setBledy(nowe);
-    setWyslane(Object.keys(nowe).length === 0);
+    setErrors(next);
+    setSent(Object.keys(next).length === 0);
   }
 
-  const klasaPola =
-    'mt-1.5 w-full rounded-md border bg-ink-900 px-3.5 py-2.5 text-ink-100 ' +
-    'placeholder:text-ink-400 focus:border-amber-400';
-
   return (
-    <form noValidate onSubmit={przy} className="mt-8 space-y-5">
-      <div>
-        <label htmlFor="imie" className="text-sm font-semibold text-ink-100">
-          {t.kontakt.imie} <span className="text-amber-400">*</span>
+    <form noValidate onSubmit={handleSubmit} className="order-form">
+      <div className="field">
+        <label htmlFor="imie">
+          {t.kontakt.imie} <span className="field-mark">*</span>
         </label>
         <input
           id="imie"
           name="imie"
           type="text"
           autoComplete="name"
-          aria-invalid={Boolean(bledy.imie)}
-          aria-describedby={bledy.imie ? 'imie-blad' : undefined}
-          className={`${klasaPola} ${bledy.imie ? 'border-red-400' : 'border-ink-600'}`}
+          aria-invalid={Boolean(errors.imie)}
+          aria-describedby={errors.imie ? 'imie-blad' : undefined}
         />
-        {bledy.imie && (
-          <p id="imie-blad" className="mt-1.5 text-sm font-medium text-red-400">
-            {bledy.imie}
+        {errors.imie && (
+          <p id="imie-blad" className="field-error">
+            {errors.imie}
           </p>
         )}
       </div>
 
-      <div>
-        <label htmlFor="email" className="text-sm font-semibold text-ink-100">
-          {t.kontakt.email} <span className="text-amber-400">*</span>
+      <div className="field">
+        <label htmlFor="email">
+          {t.kontakt.email} <span className="field-mark">*</span>
         </label>
         <input
           id="email"
           name="email"
           type="email"
           autoComplete="email"
-          aria-invalid={Boolean(bledy.email)}
-          aria-describedby={bledy.email ? 'email-blad' : undefined}
-          className={`${klasaPola} ${bledy.email ? 'border-red-400' : 'border-ink-600'}`}
+          aria-invalid={Boolean(errors.email)}
+          aria-describedby={errors.email ? 'email-blad' : undefined}
         />
-        {bledy.email && (
-          <p id="email-blad" className="mt-1.5 text-sm font-medium text-red-400">
-            {bledy.email}
+        {errors.email && (
+          <p id="email-blad" className="field-error">
+            {errors.email}
           </p>
         )}
       </div>
 
-      <div>
-        <label htmlFor="wiadomosc" className="text-sm font-semibold text-ink-100">
-          {t.kontakt.wiadomosc} <span className="text-amber-400">*</span>
+      <div className="field field--wide">
+        <label htmlFor="wiadomosc">
+          {t.kontakt.wiadomosc} <span className="field-mark">*</span>
         </label>
         <textarea
           id="wiadomosc"
           name="wiadomosc"
           rows={5}
-          aria-invalid={Boolean(bledy.wiadomosc)}
-          aria-describedby={bledy.wiadomosc ? 'wiadomosc-blad' : 'wiadomosc-podpowiedz'}
-          className={`${klasaPola} ${bledy.wiadomosc ? 'border-red-400' : 'border-ink-600'}`}
+          aria-invalid={Boolean(errors.wiadomosc)}
+          aria-describedby={errors.wiadomosc ? 'wiadomosc-blad' : 'wiadomosc-podpowiedz'}
         />
-        {bledy.wiadomosc ? (
-          <p id="wiadomosc-blad" className="mt-1.5 text-sm font-medium text-red-400">
-            {bledy.wiadomosc}
+        {errors.wiadomosc ? (
+          <p id="wiadomosc-blad" className="field-error">
+            {errors.wiadomosc}
           </p>
         ) : (
-          <p id="wiadomosc-podpowiedz" className="mt-1.5 text-sm text-ink-400">
+          <p id="wiadomosc-podpowiedz" className="field-hint">
             {t.kontakt.podpowiedz}
           </p>
         )}
       </div>
 
-      <button
-        type="submit"
-        className="rounded-md bg-amber-500 px-6 py-3 font-bold text-ink-950 transition hover:bg-amber-400"
-      >
-        {t.kontakt.wyslij}
-      </button>
+      <div className="form-foot">
+        <button type="submit" className="btn-stamp">
+          {t.kontakt.wyslij}
+        </button>
 
-      {/* Komunikat po wyslaniu jest ogloszany czytnikom ekranu. */}
-      <p aria-live="polite" className="min-h-6 text-sm">
-        {wyslane && <span className="font-semibold text-grass-500">{t.kontakt.sukces}</span>}
-      </p>
+        {/* The confirmation is announced to screen readers. */}
+        <p aria-live="polite" className="form-status">
+          {sent && <span>{t.kontakt.sukces}</span>}
+        </p>
+      </div>
     </form>
   );
 }

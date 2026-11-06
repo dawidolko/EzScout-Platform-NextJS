@@ -1,43 +1,81 @@
 @import 'tailwindcss';
 
 /*
- * EzScout — system designu.
+ * EzScout design system: a scouting file lying open on a mown pitch.
  *
- * Charakter: noc na stadionie. Bardzo ciemna, lekko niebieska podstawa,
- * bursztyn jako jedyny akcent (kolor swiatel na trybunach) i waskie,
- * kondensowane liternictwo znane z tablic wynikow. Swiadomie bez kremowych
- * tel, gradientow fioletowo-niebieskich i emoji w roli ikon.
+ * Every surface is a material with a job. Grass is the desk, sage paper carries
+ * report sheets, kraft is the folder, chalk draws anything tactical, red ink is
+ * a stamp and blue biro is the analyst's own hand. Besley sets the voice of the
+ * service, Courier Prime sets anything typed into a record, Caveat is kept for
+ * margin notes.
  */
 
 @theme {
-  --color-ink-950: #080b10;
-  --color-ink-900: #0d1119;
-  --color-ink-800: #141a25;
-  --color-ink-700: #1c2432;
-  --color-ink-600: #2a3446;
-  --color-ink-400: #8592a5;
-  --color-ink-300: #98a3b4;
-  --color-ink-100: #dbe2ec;
-  --color-ink-50: #f1f4f9;
+  --color-pitch-950: #0b2318;
+  --color-pitch-900: #0f2c20;
+  --color-pitch-850: #113024;
+  --color-pitch-700: #1e4b37;
+  --color-chalk: #edf1e6;
+  --color-chalk-soft: #b9c8b4;
 
-  --color-amber-500: #f5a524;
-  --color-amber-400: #ffb840;
-  --color-amber-300: #ffd28a;
-  --color-amber-900: #3a2a08;
+  --color-paper: #e8ede0;
+  --color-paper-light: #f1f4ea;
+  --color-rule: #a9b5a0;
+  --color-ink: #16201b;
+  --color-ink-soft: #3f4d44;
 
-  --color-grass-400: #3dbb74;
-  --color-grass-500: #2f9e5f;
+  --color-kraft: #d8b872;
+  --color-kraft-deep: #bb9a53;
+  --color-kraft-pale: #e6cf9b;
 
-  --font-display: var(--font-barlow-condensed), 'Arial Narrow', system-ui, sans-serif;
-  --font-body: var(--font-barlow), system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --color-stamp: #a81e1a;
+  --color-biro: #1b3a9c;
+
+  --font-serif: var(--font-besley), Georgia, Cambria, serif;
+  --font-type: var(--font-courier-prime), 'Courier New', Courier, monospace;
+  --font-hand: var(--font-caveat), 'Bradley Hand', 'Segoe Print', cursive;
 }
 
-:root {
-  color-scheme: dark;
-}
+@layer base {
+  :root {
+    color-scheme: dark;
+    --focus: var(--color-chalk);
+  }
 
-html {
-  scroll-behavior: smooth;
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+  }
+
+  body {
+    background-color: var(--color-pitch-900);
+    background-image: repeating-linear-gradient(
+      90deg,
+      var(--color-pitch-900) 0 9rem,
+      var(--color-pitch-850) 9rem 18rem
+    );
+    color: var(--color-chalk);
+    font-family: var(--font-serif);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    font-variant-numeric: lining-nums;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.012em;
+    text-wrap: balance;
+  }
+
+  :where(a, button, summary, input, textarea, select):focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -48,55 +86,1327 @@ html {
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
+    animation: none !important;
     transition-duration: 0.01ms !important;
   }
 }
 
-body {
-  background: var(--color-ink-950);
-  color: var(--color-ink-100);
-  font-family: var(--font-body);
-  -webkit-font-smoothing: antialiased;
-}
+@layer components {
+  .wrap {
+    width: 100%;
+    max-width: 78rem;
+    margin-inline: auto;
+    padding-inline: clamp(0.75rem, 2.5vw, 1.5rem);
+  }
 
-/* Kontrastowy pierscien fokusa — widoczny i na ciemnym tle, i na bursztynie. */
-:where(a, button, summary, input, textarea, select):focus-visible {
-  outline: 3px solid var(--color-amber-400);
-  outline-offset: 3px;
-  border-radius: 4px;
-}
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 60;
+    padding: 0.75rem 1.25rem;
+    background: var(--color-kraft);
+    color: var(--color-ink);
+    font-family: var(--font-type);
+    font-weight: 700;
+    text-decoration: none;
+    --focus: var(--color-chalk);
+  }
 
-.skip-link {
-  position: absolute;
-  left: -9999px;
-  top: 0;
-  z-index: 60;
-  padding: 0.75rem 1.25rem;
-  background: var(--color-amber-500);
-  color: var(--color-ink-950);
-  font-weight: 700;
-  text-decoration: none;
-}
+  .skip-link:focus {
+    left: 1rem;
+    top: 1rem;
+  }
 
-.skip-link:focus {
-  left: 1rem;
-  top: 1rem;
+  /* Header: index tabs standing on the rim of the folder below them. */
+  .masthead {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--color-pitch-950);
+  }
+
+  .masthead-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 0.75rem;
+  }
+
+  .wordmark {
+    font-family: var(--font-serif);
+    font-size: 1.6rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--color-chalk);
+    text-decoration: none;
+  }
+
+  .masthead .wordmark {
+    align-self: center;
+    padding-block: 0.25rem 0.65rem;
+  }
+
+  .tabs {
+    display: none;
+    margin-left: auto;
+  }
+
+  .tabs ul {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.2rem;
+  }
+
+  .tab {
+    position: relative;
+    isolation: isolate;
+    display: block;
+    padding: 0.5rem 1.15rem 0.45rem;
+    color: var(--color-ink);
+    font-family: var(--font-type);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    line-height: 1.3;
+    text-decoration: none;
+    white-space: nowrap;
+    transform: translateY(0.3rem);
+    transition: transform 0.14s ease-out;
+  }
+
+  .tab::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--tab-fill, var(--color-kraft-deep));
+    clip-path: polygon(0.6rem 0, calc(100% - 0.6rem) 0, 100% 100%, 0 100%);
+  }
+
+  .tab:hover,
+  .tab:focus-visible {
+    transform: translateY(0);
+    --tab-fill: var(--color-kraft);
+  }
+
+  .tab[aria-current] {
+    transform: translateY(0);
+    --tab-fill: var(--color-paper);
+  }
+
+  .tab:hover::before,
+  .tab:focus-visible::before,
+  .tab[aria-current]::before {
+    bottom: -0.3rem;
+  }
+
+  /* The panel's contrast modes recolour elements but cannot reach pseudo-elements. */
+  html.a11yp-contrast .tab::before,
+  html.a11yp-light .tab::before {
+    display: none;
+  }
+
+  .tab--order {
+    color: var(--color-paper-light);
+    --tab-fill: var(--color-stamp);
+  }
+
+  .tab--order:hover,
+  .tab--order:focus-visible {
+    --tab-fill: var(--color-stamp);
+  }
+
+  .tab--order[aria-current] {
+    color: var(--color-stamp);
+    --tab-fill: var(--color-paper);
+  }
+
+  .masthead-tools {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 0.6rem;
+  }
+
+  .lang-label,
+  .menu-toggle {
+    min-height: 2.25rem;
+    padding: 0.3rem 0.65rem;
+    border: 1px solid var(--color-chalk-soft);
+    background: transparent;
+    color: var(--color-chalk);
+    font-family: var(--font-type);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    line-height: 1.5;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .lang-label:hover,
+  .menu-toggle:hover {
+    background: var(--color-chalk);
+    color: var(--color-pitch-950);
+  }
+
+  .drawer {
+    background: var(--color-kraft);
+    color: var(--color-ink);
+    --focus: var(--color-biro);
+  }
+
+  .drawer ul {
+    padding-block: 0.4rem;
+  }
+
+  .drawer a {
+    display: block;
+    padding: 0.7rem 0;
+    border-bottom: 1px dashed var(--color-ink-soft);
+    color: var(--color-ink);
+    font-family: var(--font-type);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .drawer li:last-child a {
+    border-bottom: 0;
+  }
+
+  /* Hero: one report page inside the open folder. */
+  .desk {
+    padding-bottom: clamp(2.5rem, 6vw, 5rem);
+  }
+
+  .folder {
+    padding: clamp(0.6rem, 1.5vw, 1.15rem);
+    padding-bottom: clamp(0.8rem, 2vw, 1.4rem);
+    border-radius: 0 0 6px 6px;
+    background: var(--color-kraft);
+    box-shadow: 0 1.5rem 3rem rgb(5 18 12 / 55%);
+  }
+
+  .page,
+  .sheet {
+    --focus: var(--color-biro);
+    --margin: clamp(1.5rem, calc(19vw - 5rem), 9.5rem);
+    --hole: var(--color-pitch-900);
+    position: relative;
+    color: var(--color-ink);
+    color-scheme: light;
+    background-color: var(--color-paper);
+  }
+
+  .page {
+    --hole: var(--color-kraft);
+    padding: clamp(0.9rem, 2.2vw, 1.6rem) clamp(0.9rem, 3vw, 2.75rem) clamp(1.5rem, 3vw, 2.5rem)
+      calc(var(--margin) + clamp(0.75rem, 2.2vw, 2.25rem));
+    box-shadow: 0.35rem 0.35rem 0 var(--color-kraft-deep);
+  }
+
+  /* The margin of every sheet: a ruled line and two punched binder holes. */
+  .page::before,
+  .sheet::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: var(--margin);
+    border-right: 1px solid rgb(168 30 26 / 45%);
+    background-image:
+      radial-gradient(circle, var(--hole) 0 0.45rem, transparent 0.48rem),
+      radial-gradient(circle, var(--hole) 0 0.45rem, transparent 0.48rem);
+    background-repeat: no-repeat;
+    background-size: 1.6rem 1.6rem;
+    background-position:
+      min(calc(var(--margin) / 2 - 0.8rem), 0.3rem) 4.5rem,
+      min(calc(var(--margin) / 2 - 0.8rem), 0.3rem) 13rem;
+    pointer-events: none;
+  }
+
+  .page-letterhead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--color-ink);
+    font-family: var(--font-type);
+    font-weight: 700;
+    font-size: 0.9375rem;
+  }
+
+  .page-head {
+    display: grid;
+    gap: 1.75rem;
+    padding-top: clamp(1.25rem, 3vw, 2.25rem);
+  }
+
+  .page-title h1 {
+    font-size: clamp(2.3rem, 1.5rem + 3.9vw, 4.05rem);
+    line-height: 1.03;
+  }
+
+  .page-summary {
+    max-width: 38rem;
+    margin-top: 1.1rem;
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--color-ink);
+  }
+
+  .page-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.9rem 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .print {
+    position: relative;
+    width: min(100%, 19rem);
+    margin-inline: auto 0.25rem;
+    padding: 0.5rem 0.5rem 0.2rem;
+    background: var(--color-paper-light);
+    box-shadow: 0 0.35rem 0.9rem rgb(10 26 18 / 35%);
+    transform: rotate(1.6deg);
+  }
+
+  .print figcaption {
+    padding-top: 0.2rem;
+    color: var(--color-ink);
+    font-family: var(--font-type);
+    font-size: 0.875rem;
+    text-align: center;
+  }
+
+  .print-clip {
+    position: absolute;
+    top: -1.65rem;
+    left: 1.5rem;
+    z-index: 1;
+    color: var(--color-ink-soft);
+  }
+
+  /* Chalk stroke shared by every tactical drawing. */
+  .chalk {
+    display: block;
+    width: 100%;
+    height: auto;
+    fill: none;
+    stroke: var(--color-chalk);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .chalk-grass {
+    fill: var(--color-pitch-700);
+    stroke: none;
+  }
+
+  .chalk-mow {
+    fill: rgb(255 255 255 / 4%);
+    stroke: none;
+  }
+
+  .chalk-dot {
+    fill: var(--color-chalk);
+  }
+
+  .chalk-zone {
+    fill: rgb(237 241 230 / 16%);
+    stroke-dasharray: 3 5;
+  }
+
+  .chalk-player {
+    fill: var(--color-kraft);
+    stroke: var(--color-chalk);
+  }
+
+  .report {
+    display: grid;
+    gap: 1.25rem 2.5rem;
+    margin-top: clamp(1.5rem, 3vw, 2.25rem);
+    padding-top: 1rem;
+    border-top: 2px solid var(--color-ink);
+  }
+
+  .report-subject {
+    font-family: var(--font-type);
+    font-size: 0.9375rem;
+  }
+
+  .report-name {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+
+  .rating {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0 0.75rem;
+    align-items: baseline;
+    padding-block: 0.45rem;
+    border-bottom: 1px dotted var(--color-ink-soft);
+    font-family: var(--font-type);
+    font-size: 0.9375rem;
+  }
+
+  .rating:first-child {
+    border-top: 1px dotted var(--color-ink-soft);
+  }
+
+  .rating-score {
+    font-weight: 700;
+    font-size: 1.0625rem;
+  }
+
+  .rating-score span {
+    font-weight: 400;
+    font-size: 0.875rem;
+  }
+
+  .rating-scale {
+    grid-column: 1 / -1;
+    font-weight: 700;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    color: var(--color-ink);
+  }
+
+  .note {
+    color: var(--color-biro);
+    font-family: var(--font-hand);
+    font-size: 1.3rem;
+    font-weight: 600;
+    line-height: 1.05;
+  }
+
+  .rating .note {
+    grid-column: 1 / -1;
+    padding-top: 0.15rem;
+  }
+
+  .note--inline {
+    margin-top: 0.75rem;
+    transform: rotate(-1.2deg);
+    transform-origin: left center;
+  }
+
+  .report-verdict {
+    position: relative;
+    font-family: var(--font-type);
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .report-verdict h2 {
+    margin-bottom: 0.2rem;
+    font-family: var(--font-type);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 1.4;
+  }
+
+  /* Red ink. The mask wears the print down the way a rubber stamp does. */
+  .stamp {
+    display: inline-block;
+    padding: 0.2em 0.55em;
+    border: 3px solid currentColor;
+    border-radius: 3px;
+    box-shadow:
+      inset 0 0 0 2px var(--color-paper),
+      inset 0 0 0 3px currentColor;
+    color: var(--color-stamp);
+    font-family: var(--font-type);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    line-height: 1.25;
+    text-transform: uppercase;
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -3 2.5'/%3E%3C/filter%3E%3Crect width='240' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+    mask-size: 240px 120px;
+  }
+
+  .stamp--small {
+    padding: 0.08em 0.45em;
+    border-width: 2px;
+    box-shadow: none;
+    font-size: 0.8125rem;
+    letter-spacing: 0.05em;
+    mask-image: none;
+    transform: rotate(-2deg);
+  }
+
+  .stamp--verdict {
+    --tilt: -6deg;
+    display: block;
+    width: fit-content;
+    margin: 0.85rem 0 0 auto;
+    font-size: clamp(1.25rem, 3.4vw, 1.6rem);
+    transform: rotate(var(--tilt));
+  }
+
+  .stamp--row {
+    font-size: 0.875rem;
+    letter-spacing: 0.04em;
+    mask-image: none;
+    transform: rotate(-3deg);
+  }
+
+  /* Buttons look like the stamp that will land once you press them. */
+  .btn-stamp {
+    display: inline-block;
+    padding: 0.7rem 1.35rem 0.6rem;
+    border: 2px solid var(--color-stamp);
+    border-radius: 3px;
+    background: var(--color-stamp);
+    box-shadow:
+      inset 0 0 0 2px var(--color-stamp),
+      inset 0 0 0 3px var(--color-paper);
+    color: var(--color-paper-light);
+    font-family: var(--font-type);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.25;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.08s ease-out;
+  }
+
+  .btn-stamp:hover {
+    background: #8c1714;
+    border-color: #8c1714;
+    box-shadow:
+      inset 0 0 0 2px #8c1714,
+      inset 0 0 0 3px var(--color-paper);
+  }
+
+  .btn-stamp:active {
+    transform: scale(0.96) rotate(-1deg);
+  }
+
+  .btn-stamp--small {
+    padding: 0.45rem 0.9rem 0.35rem;
+    font-size: 0.9375rem;
+  }
+
+  .btn-stamp--open {
+    background: transparent;
+    box-shadow: none;
+    color: var(--color-stamp);
+  }
+
+  .btn-stamp--open:hover {
+    background: var(--color-stamp);
+    border-color: var(--color-stamp);
+    box-shadow: none;
+    color: var(--color-paper-light);
+  }
+
+  .link-typed {
+    padding-block: 0.2rem;
+    color: var(--color-ink);
+    font-family: var(--font-type);
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.25em;
+  }
+
+  .link-typed:hover {
+    color: var(--color-biro);
+  }
+
+  /* Sheets: a tab with the section name, then the page it belongs to. */
+  .sect {
+    padding-block: clamp(2.5rem, 6vw, 5rem);
+  }
+
+  .sheet-tab {
+    position: relative;
+    z-index: 1;
+    width: fit-content;
+    max-width: 100%;
+    padding: 0.55rem 1.4rem 0.3rem;
+    border-radius: 7px 7px 0 0;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-size: clamp(1.6rem, 1.2rem + 1.5vw, 2.35rem);
+  }
+
+  .sheet {
+    padding: clamp(1.25rem, 3vw, 2.25rem) clamp(0.9rem, 3vw, 2.75rem) clamp(1.5rem, 3vw, 2.5rem)
+      calc(var(--margin) + clamp(0.75rem, 2.2vw, 2.25rem));
+    box-shadow:
+      0.3rem 0.3rem 0 var(--color-paper-light),
+      0.3rem 0.3rem 0 1px rgb(5 18 12 / 50%),
+      0 1.25rem 2.5rem rgb(5 18 12 / 45%);
+  }
+
+  .sheet-lead {
+    max-width: 40rem;
+    font-size: 1.125rem;
+    line-height: 1.6;
+  }
+
+  .sheet-clip {
+    position: absolute;
+    top: -1.5rem;
+    right: 2.5rem;
+    color: var(--color-ink-soft);
+  }
+
+  /* Packages: a price ledger, one ruled row per package. */
+  .ledger {
+    margin-top: 1.25rem;
+    border-top: 2px solid var(--color-ink);
+  }
+
+  .ledger-row {
+    display: grid;
+    gap: 0.6rem 2rem;
+    padding-block: 1.35rem;
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .ledger-row:last-child {
+    border-bottom: 2px solid var(--color-ink);
+  }
+
+  .ledger-row--marked {
+    background: linear-gradient(90deg, rgb(216 184 114 / 50%), rgb(216 184 114 / 28%));
+    box-shadow: 0 0 0 1px rgb(187 154 83 / 60%);
+    margin-inline: -0.65rem;
+    padding-inline: 0.65rem;
+  }
+
+  .ledger-name h3 {
+    font-size: 1.75rem;
+  }
+
+  .ledger-price {
+    font-family: var(--font-type);
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .ledger-desc {
+    max-width: 34rem;
+  }
+
+  .ledger-terms {
+    font-family: var(--font-type);
+    font-size: 0.9375rem;
+    line-height: 1.45;
+  }
+
+  .ledger-terms li {
+    display: grid;
+    grid-template-columns: 2.1rem minmax(0, 1fr);
+  }
+
+  .ledger-terms li::before {
+    content: '[x]' / '';
+    font-weight: 700;
+  }
+
+  .ledger-order {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  /* How we work: the board is the section, drawn straight on the grass. */
+  .board {
+    padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(3rem, 7vw, 5.5rem);
+    background: var(--color-pitch-950);
+  }
+
+  .board-head {
+    display: grid;
+    gap: 0.75rem 3rem;
+    align-items: end;
+  }
+
+  .board-head h2 {
+    font-size: clamp(2.3rem, 1.6rem + 3vw, 3.75rem);
+  }
+
+  .board-head p {
+    max-width: 30rem;
+    color: var(--color-chalk-soft);
+    font-family: var(--font-type);
+  }
+
+  .chalk--move {
+    display: none;
+    margin-top: 2.25rem;
+  }
+
+  .chalk-faint {
+    stroke: var(--color-chalk-soft);
+    stroke-width: 1.5;
+    opacity: 0.55;
+  }
+
+  .chalk-run {
+    stroke-width: 3;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+
+  .chalk-head {
+    stroke-width: 3;
+  }
+
+  .chalk-marks circle {
+    fill: var(--color-pitch-950);
+    stroke-width: 2.5;
+  }
+
+  .chalk-marks text {
+    fill: var(--color-chalk);
+    stroke: none;
+    font-family: var(--font-type);
+    font-size: 24px;
+    font-weight: 700;
+    text-anchor: middle;
+  }
+
+  .moves {
+    counter-reset: move;
+    margin-top: 2rem;
+  }
+
+  .moves li {
+    position: relative;
+    padding: 0 0 1.75rem 3.5rem;
+    counter-increment: move;
+  }
+
+  .moves li::before {
+    content: counter(move);
+    position: absolute;
+    top: -0.15rem;
+    left: 0;
+    display: grid;
+    place-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border: 2px solid var(--color-chalk);
+    border-radius: 50%;
+    font-family: var(--font-type);
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .moves li:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 2.5rem;
+    bottom: 0;
+    left: 1.15rem;
+    border-left: 2px dashed var(--color-chalk-soft);
+  }
+
+  .moves h3 {
+    font-size: 1.5rem;
+  }
+
+  .moves p {
+    margin-top: 0.4rem;
+    max-width: 34rem;
+    color: var(--color-chalk);
+  }
+
+  /* Results: a season review, typed as a record next to the written account. */
+  .review {
+    display: grid;
+    gap: 1.75rem 3rem;
+  }
+
+  .review-text p + p:not(.note) {
+    margin-top: 0.9rem;
+  }
+
+  .record {
+    border-top: 2px solid var(--color-ink);
+  }
+
+  .record-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0 1rem;
+    align-items: baseline;
+    padding-block: 0.6rem 0.65rem;
+    border-bottom: 1px dotted var(--color-ink-soft);
+    font-family: var(--font-type);
+  }
+
+  .record-row dt {
+    font-weight: 700;
+  }
+
+  .record-value {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .record-note {
+    grid-column: 1 / -1;
+    font-size: 0.9375rem;
+    line-height: 1.4;
+  }
+
+  /* Questions: a kraft divider holding a typed transcript. */
+  .kraft {
+    --focus: var(--color-biro);
+    background: var(--color-kraft);
+    color: var(--color-ink);
+  }
+
+  .kraft-inner {
+    display: grid;
+    gap: 1.5rem 3rem;
+    padding-block: clamp(2.5rem, 6vw, 4.5rem);
+  }
+
+  .kraft-inner h2 {
+    font-size: clamp(2.1rem, 1.5rem + 2.6vw, 3.25rem);
+  }
+
+  .transcript {
+    border-top: 2px solid var(--color-ink);
+  }
+
+  .transcript details {
+    border-bottom: 1px solid var(--color-ink);
+  }
+
+  .transcript summary {
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1fr) auto;
+    gap: 0.25rem;
+    align-items: baseline;
+    padding-block: 0.8rem;
+    font-weight: 700;
+    line-height: 1.35;
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .transcript summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .transcript summary::before {
+    content: 'Q.' / '';
+    font-family: var(--font-type);
+    font-weight: 700;
+  }
+
+  .transcript summary::after {
+    content: '[+]' / '';
+    font-family: var(--font-type);
+    font-weight: 700;
+  }
+
+  .transcript details[open] summary::after {
+    content: '[-]' / '';
+    color: var(--color-biro);
+  }
+
+  .transcript summary:hover span {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .transcript details p {
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1fr);
+    gap: 0.25rem;
+    padding-bottom: 1rem;
+    max-width: 44rem;
+    font-family: var(--font-type);
+    line-height: 1.5;
+  }
+
+  .transcript details p::before {
+    content: 'A.' / '';
+    font-weight: 700;
+  }
+
+  .transcript details[open] p {
+    animation: unroll 0.18s ease-out;
+  }
+
+  /* Order form: a printed form with blanks to fill in. */
+  .order-form {
+    display: grid;
+    gap: 1.25rem 2rem;
+    margin-top: 1.5rem;
+  }
+
+  .field label {
+    display: block;
+    font-family: var(--font-type);
+    font-weight: 700;
+    font-size: 0.9375rem;
+  }
+
+  .field-mark {
+    color: var(--color-stamp);
+  }
+
+  .field input,
+  .field textarea {
+    display: block;
+    width: 100%;
+    margin-top: 0.15rem;
+    padding: 0.4rem 0.5rem 0.3rem;
+    border: 0;
+    border-bottom: 2px solid var(--color-ink);
+    border-radius: 0;
+    background: var(--color-paper-light);
+    color: var(--color-ink);
+    font-family: var(--font-type);
+    font-size: 1.0625rem;
+    line-height: 1.75rem;
+  }
+
+  .field textarea {
+    resize: vertical;
+    background-image: repeating-linear-gradient(
+      180deg,
+      transparent 0 calc(1.75rem - 1px),
+      var(--color-rule) calc(1.75rem - 1px) 1.75rem
+    );
+    background-position: 0 0.4rem;
+    background-attachment: local;
+  }
+
+  .field [aria-invalid='true'] {
+    border-bottom-color: var(--color-stamp);
+    box-shadow: 0 1px 0 var(--color-stamp);
+  }
+
+  .field-error {
+    margin-top: 0.3rem;
+    color: var(--color-stamp);
+    font-family: var(--font-type);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .field-hint {
+    margin-top: 0.3rem;
+    font-family: var(--font-type);
+    font-size: 0.9375rem;
+    line-height: 1.35;
+  }
+
+  .form-foot {
+    display: grid;
+    gap: 0.75rem 1.5rem;
+    justify-items: start;
+    align-items: center;
+  }
+
+  .form-status {
+    min-height: 1.5rem;
+    color: #114a30;
+    font-family: var(--font-type);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  /* Footer: a routing slip on the last stretch of grass, with the centre spot below it. */
+  .foot {
+    position: relative;
+    overflow: hidden;
+    padding-top: clamp(2rem, 5vw, 3.5rem);
+    background: var(--color-pitch-950);
+    color: var(--color-chalk);
+  }
+
+  .foot > .wrap {
+    position: relative;
+    z-index: 1;
+  }
+
+  .slip {
+    display: grid;
+    border: 2px solid var(--color-chalk-soft);
+  }
+
+  .slip > div {
+    padding: 1rem 1.25rem 1.1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .slip > div + div {
+    border-top: 1px solid var(--color-chalk-soft);
+  }
+
+  .slip h2 {
+    margin-bottom: 0.45rem;
+    color: var(--color-kraft);
+    font-family: var(--font-type);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 1.4;
+  }
+
+  .slip li {
+    padding-block: 0.12rem;
+    font-family: var(--font-type);
+    font-size: 0.9375rem;
+    overflow-wrap: anywhere;
+  }
+
+  .slip li a,
+  .foot-base a {
+    display: inline-block;
+    min-height: 1.5rem;
+    color: var(--color-chalk);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .slip li a:hover,
+  .foot-base a:hover {
+    color: var(--color-kraft);
+  }
+
+  .slip-brand .wordmark {
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+  }
+
+  .slip-brand p + p {
+    max-width: 28rem;
+  }
+
+  .foot-base {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.25rem 2rem;
+    padding-block: 1rem 0.5rem;
+    color: var(--color-chalk-soft);
+    font-family: var(--font-type);
+    font-size: 0.875rem;
+  }
+
+  .foot-arc {
+    display: block;
+    width: 100%;
+    height: 7rem;
+    margin-top: 0.5rem;
+    fill: none;
+    stroke: var(--color-chalk-soft);
+    stroke-width: 2;
+    opacity: 0.6;
+  }
+
+  .foot-arc circle {
+    fill: var(--color-chalk-soft);
+  }
+
+  /* Not found: a single misfiled sheet. */
+  .missing {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100dvh;
+    padding-block: 3rem;
+  }
+
+  .missing .stamp--verdict {
+    margin: 0 0 0.75rem;
+    font-size: 2.25rem;
+  }
+
+  @media (min-width: 40rem) {
+    .ledger-row {
+      grid-template-columns: 11rem minmax(0, 1fr);
+    }
+
+    .ledger-terms,
+    .ledger-order {
+      grid-column: 2;
+    }
+
+    .order-form {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .field--wide,
+    .form-foot {
+      grid-column: 1 / -1;
+    }
+
+    .form-foot {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .slip {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .slip-brand {
+      grid-column: 1 / -1;
+    }
+
+    .slip > div + div + div {
+      border-left: 1px solid var(--color-chalk-soft);
+    }
+  }
+
+  @media (min-width: 60rem) {
+    .tabs {
+      display: block;
+    }
+
+    .menu-toggle {
+      display: none;
+    }
+
+    .masthead-row {
+      gap: 1.25rem;
+    }
+
+    .page-head {
+      grid-template-columns: minmax(0, 1fr) 19rem;
+      gap: 2.25rem;
+      align-items: start;
+    }
+
+    .print {
+      margin: -0.4rem -1rem 0 0;
+    }
+
+    .report {
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    }
+
+    .report-subject {
+      grid-column: 1 / -1;
+    }
+
+    .report-verdict .stamp--verdict {
+      position: absolute;
+      top: -6.1rem;
+      right: 0;
+      margin: 0;
+    }
+
+    /* Each scale sits on the same row as its name and score. */
+    .rating {
+      grid-template-columns: minmax(0, 1fr) 11.5rem 4rem;
+      padding-block: 0.32rem;
+    }
+
+    .rating-score {
+      grid-column: 3;
+      grid-row: 1;
+      text-align: right;
+    }
+
+    .rating-scale {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .ledger-row {
+      grid-template-columns: 11rem minmax(0, 1fr) minmax(0, 1fr) 9.5rem;
+      align-items: start;
+    }
+
+    .ledger-terms,
+    .ledger-order {
+      grid-column: auto;
+    }
+
+    .ledger-order {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .ledger-order .stamp {
+      margin-top: 0.15rem;
+      text-align: center;
+    }
+
+    .board-head {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 30rem);
+    }
+
+    .chalk--move {
+      display: block;
+    }
+
+    .moves {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 2.5rem;
+      margin-top: 1.25rem;
+    }
+
+    .moves li {
+      padding: 0;
+    }
+
+    .moves li::before,
+    .moves li:not(:last-child)::after {
+      content: none;
+    }
+
+    .sect--right {
+      padding-left: clamp(3rem, 12vw, 11rem);
+    }
+
+    .sect--left {
+      padding-right: clamp(3rem, 20vw, 19rem);
+    }
+
+    .review {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    }
+
+    .kraft-inner {
+      grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
+    }
+
+    .kraft-inner h2 {
+      position: sticky;
+      top: 6rem;
+      align-self: start;
+    }
+
+    .slip {
+      grid-template-columns: 1.4fr 0.8fr 1.2fr;
+    }
+
+    .slip-brand {
+      grid-column: auto;
+    }
+
+    .slip > div + div {
+      border-top: 0;
+      border-left: 1px solid var(--color-chalk-soft);
+    }
+  }
+
+  /* From here the page margin is wide enough for the analyst's notes to drift into it. */
+  @media (min-width: 72rem) {
+    .rating .note {
+      position: absolute;
+      top: 50%;
+      right: calc(100% + 2.75rem);
+      width: calc(var(--margin) - 2.75rem);
+      padding: 0;
+      font-size: 1.32rem;
+      text-align: right;
+      transform: translateY(-50%) rotate(-2.5deg);
+    }
+  }
 }
 
 /*
- * Motyw linii boiska: cienkie, ukosne pasy w tle sekcji nadrzednej.
- * Rysowane gradientem, wiec nie kosztuja zadnego zadania sieciowego.
+ * One moment of unprompted motion: the verdict stamp lands after the page has
+ * been read for a beat. The resting state is fully visible, so anything that
+ * turns animation off simply shows the stamp.
  */
-.pitch-lines {
-  background-image: repeating-linear-gradient(
-    115deg,
-    transparent 0 46px,
-    rgb(255 255 255 / 2.5%) 46px 47px
-  );
+@keyframes thump {
+  from {
+    opacity: 0;
+    transform: rotate(var(--tilt)) scale(2.1);
+  }
+
+  65% {
+    opacity: 1;
+    transform: rotate(var(--tilt)) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: rotate(var(--tilt)) scale(1);
+  }
 }
 
-.tabular {
-  font-variant-numeric: tabular-nums;
+@keyframes unroll {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+
+  to {
+    clip-path: inset(0);
+  }
+}
+
+@keyframes chalk-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes chalk-show {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .report-verdict .stamp--verdict {
+    animation: thump 0.32s cubic-bezier(0.2, 0.8, 0.3, 1) 0.7s both;
+  }
+
+  @supports (animation-timeline: view()) {
+    .chalk-run {
+      animation: chalk-draw linear both;
+      animation-timeline: view();
+      animation-range: entry 35% cover 45%;
+    }
+
+    .chalk-run--late {
+      animation-range: cover 30% cover 55%;
+    }
+
+    .chalk-head {
+      animation: chalk-show linear both;
+      animation-timeline: view();
+      animation-range: cover 44% cover 46%;
+    }
+
+    .chalk-head--late {
+      animation-range: cover 54% cover 56%;
+    }
+  }
 }
