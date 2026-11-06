@@ -63,7 +63,7 @@ export function SiteHeader({ t }: { t: Tresc }) {
                 href={t.jezyk.drugiHref}
                 hrefLang={t.jezyk.drugiLang}
                 lang={t.jezyk.drugiLang}
-                aria-label={t.jezyk.etykieta}
+                aria-label={`${t.jezyk.drugi}: ${t.jezyk.etykieta}`}
                 className="rounded-md border border-ink-600 px-3 py-1.5 text-sm font-bold text-ink-100 transition hover:border-amber-400 hover:text-amber-400"
               >
                 {t.jezyk.drugi}
@@ -77,7 +77,7 @@ export function SiteHeader({ t }: { t: Tresc }) {
             href={t.jezyk.drugiHref}
             hrefLang={t.jezyk.drugiLang}
             lang={t.jezyk.drugiLang}
-            aria-label={t.jezyk.etykieta}
+            aria-label={`${t.jezyk.drugi}: ${t.jezyk.etykieta}`}
             className="rounded-md border border-ink-600 px-3 py-2 text-sm font-bold text-ink-100"
           >
             {t.jezyk.drugi}
