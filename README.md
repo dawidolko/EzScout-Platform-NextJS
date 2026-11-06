@@ -35,6 +35,11 @@ There is no backend and no database. The whole site is prerendered to files and 
 
 ## 🖼️ Screenshots
 
+<p align="center">
+  <img src="docs/readme/desktop.webp" alt="EzScout on a desktop screen" width="74%">
+  <img src="docs/readme/mobile.webp" alt="EzScout on a phone" width="22%">
+</p>
+
 | Hero — the offer in one screen                                                                  | Packages                                                                        |
 | ------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |
 | ![The EzScout hero as an open report page with a stamped verdict](docs/screenshots/hero.webp)                | ![The four scouting packages as rows of a price ledger](docs/screenshots/oferta.webp)        |
