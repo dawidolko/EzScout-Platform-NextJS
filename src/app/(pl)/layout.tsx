@@ -1,10 +1,14 @@
 import type { Metadata } from 'next';
 import '../globals.css';
+import { fontVariables } from '../fonts';
+import { CONTENT_SECURITY_POLICY } from '../csp';
 import { TRESC } from '@/components/tresc';
 import { SiteHeader } from '@/components/SiteHeader';
 import { SiteFooter } from '@/components/SiteFooter';
 
 const t = TRESC['pl'];
+
+const OG_ALT = 'EzScout: raporty skautingowe i analiza meczów';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://ezscout.dawidolko.pl'),
@@ -21,12 +25,11 @@ export const metadata: Metadata = {
     siteName: 'EzScout',
     title: 'EzScout — raporty skautingowe i analizy meczowe',
     description: 'Raporty skautingowe i analizy meczowe dla klubow, agentow i sztabow. Dane zbierane recznie, wnioski pisane przez analityka, dostawa w 48 godzin.',
+    images: [{ url: 'https://ezscout.dawidolko.pl/og-image.png', width: 1200, height: 630, alt: OG_ALT }],
   },
-  twitter: { card: 'summary_large_image', title: 'EzScout — raporty skautingowe i analizy meczowe', description: 'Raporty skautingowe i analizy meczowe dla klubow, agentow i sztabow. Dane zbierane recznie, wnioski pisane przez analityka, dostawa w 48 godzin.' },
+  twitter: { card: 'summary_large_image', title: 'EzScout — raporty skautingowe i analizy meczowe', description: 'Raporty skautingowe i analizy meczowe dla klubow, agentow i sztabow. Dane zbierane recznie, wnioski pisane przez analityka, dostawa w 48 godzin.', images: ['https://ezscout.dawidolko.pl/og-image.png'] },
   alternates: {
     canonical: 'https://ezscout.dawidolko.pl/pl/',
-    // Obie wersje wskazuja na siebie nawzajem, a angielska jest domyslna dla
-    // odwiedzajacych spoza listy jezykow.
     languages: {
       en: 'https://ezscout.dawidolko.pl/',
       pl: 'https://ezscout.dawidolko.pl/pl/',
@@ -34,31 +37,38 @@ export const metadata: Metadata = {
     },
   },
   robots: { index: true, follow: true },
+  referrer: 'strict-origin-when-cross-origin',
 };
 
 const daneStrukturalne = {
   '@context': 'https://schema.org',
-  '@type': 'ProfessionalService',
-  name: 'EzScout',
-  url: 'https://ezscout.dawidolko.pl/pl/',
-  description: 'Raporty skautingowe i analizy meczowe dla klubow, agentow i sztabow. Dane zbierane recznie, wnioski pisane przez analityka, dostawa w 48 godzin.',
-  areaServed: 'PL',
-  serviceType: 'Football scouting and match analysis',
-  inLanguage: 'pl',
-  provider: { '@type': 'Person', name: 'Dawid Olko', url: 'https://dawidolko.pl' },
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      name: 'EzScout',
+      url: 'https://ezscout.dawidolko.pl/pl/',
+      description: 'Raporty skautingowe i analizy meczowe dla klubow, agentow i sztabow. Dane zbierane recznie, wnioski pisane przez analityka, dostawa w 48 godzin.',
+      inLanguage: 'pl',
+      author: { '@type': 'Person', name: 'Dawid Olko', url: 'https://dawidolko.pl' },
+    },
+    {
+      '@type': 'Service',
+      name: 'Football scouting and match analysis',
+      url: 'https://ezscout.dawidolko.pl/pl/',
+      description: 'Raporty skautingowe i analizy meczowe dla klubow, agentow i sztabow. Dane zbierane recznie, wnioski pisane przez analityka, dostawa w 48 godzin.',
+      serviceType: 'Football scouting and match analysis',
+      areaServed: 'PL',
+      provider: { '@type': 'Person', name: 'Dawid Olko', url: 'https://dawidolko.pl' },
+    },
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pl">
+    <html lang="pl" className={fontVariables}>
       <head>
+        <meta httpEquiv="Content-Security-Policy" content={CONTENT_SECURITY_POLICY} />
         <script src="/a11y/a11y-panel.js" data-accent="#1d4ed8" defer></script>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&display=swap"
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(daneStrukturalne) }}

@@ -1,0 +1,12 @@
+# EzScout
+
+> EzScout is a demo football-scouting site by Dawid Olko: scouting reports and match analysis, with data collected by hand and conclusions written by an analyst. It is a static site in English and Polish.
+
+## Pages
+
+- [Home (English)](https://ezscout.dawidolko.pl/): report types, how the process works, track record and contact form
+- [Home (Polish)](https://ezscout.dawidolko.pl/pl/): the same page in Polish
+
+## Author
+
+- [Dawid Olko](https://dawidolko.pl): Fullstack / AI Developer who built this site

@@ -54,25 +54,25 @@ export function StronaGlowna({ t }: { t: Tresc }) {
                   <p className="text-xs uppercase tracking-wider text-ink-400">{t.hero.kartaNadtytul}</p>
                   <p className="font-display text-2xl font-bold text-ink-50">{t.hero.kartaTytul}</p>
                 </div>
-                <span className="rounded bg-grass-500/15 px-2.5 py-1 text-xs font-bold text-grass-500">
+                <span className="rounded bg-grass-500/15 px-2.5 py-1 text-xs font-bold text-grass-400">
                   {t.hero.kartaZnacznik}
                 </span>
               </div>
 
               <dl className="mt-5 space-y-4">
                 {t.hero.kartaOceny.map(([nazwa, wynik]) => (
-                  <div key={nazwa}>
-                    <div className="flex items-baseline justify-between text-sm">
-                      <dt className="text-ink-300">{nazwa}</dt>
-                      <dd className="tabular font-semibold text-ink-50">{wynik}/100</dd>
-                    </div>
-                    <div
-                      className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-ink-700"
-                      role="img"
-                      aria-label={`${nazwa}: ${wynik}/100`}
-                    >
-                      <div className="h-full rounded-full bg-amber-500" style={{ width: `${wynik}%` }} />
-                    </div>
+                  <div key={nazwa} className="grid grid-cols-[1fr_auto] items-baseline text-sm">
+                    <dt className="text-ink-300">{nazwa}</dt>
+                    <dd className="tabular font-semibold text-ink-50">{wynik}/100</dd>
+                    <dd className="col-span-2 mt-1.5">
+                      <div
+                        className="h-1.5 overflow-hidden rounded-full bg-ink-700"
+                        role="img"
+                        aria-label={`${nazwa}: ${wynik}/100`}
+                      >
+                        <div className="h-full rounded-full bg-amber-500" style={{ width: `${wynik}%` }} />
+                      </div>
+                    </dd>
                   </div>
                 ))}
               </dl>
@@ -148,7 +148,7 @@ export function StronaGlowna({ t }: { t: Tresc }) {
           <ol className="mt-10 grid gap-6 md:grid-cols-3">
             {t.jak.kroki.map((k, i) => (
               <li key={k.tytul} className="rounded-xl border border-ink-700 bg-ink-800 p-6">
-                <p className="tabular font-display text-5xl font-bold text-amber-500/40">
+                <p className="tabular font-display text-5xl font-bold text-amber-500/60">
                   {String(i + 1).padStart(2, '0')}
                 </p>
                 <h3 className="mt-3 font-display text-xl font-bold text-ink-50">{k.tytul}</h3>
@@ -176,7 +176,7 @@ export function StronaGlowna({ t }: { t: Tresc }) {
                 <div key={l.etykieta} className="rounded-xl border border-ink-700 bg-ink-900 p-6">
                   <dt className="text-xs uppercase tracking-wider text-ink-400">{l.etykieta}</dt>
                   <dd className="tabular mt-2 font-display text-4xl font-bold text-amber-400">{l.wartosc}</dd>
-                  <p className="mt-2 text-sm text-ink-300">{l.opis}</p>
+                  <dd className="mt-2 text-sm text-ink-300">{l.opis}</dd>
                 </div>
               ))}
             </dl>
